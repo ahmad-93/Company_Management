@@ -1,5 +1,7 @@
 import sqlite3
 import os,requests
+from typing import Counter
+from sqlite3.dbapi2 import version_info
 import getpass
 import time,sys
 import smtplib
@@ -12,6 +14,7 @@ import operator
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 os.system("clear")
+Vers = requests.get('https://pastebin.com/raw/dYNasC5t').text.format('utf-8')
 db = sqlite3.connect("company.db")
 cr = db.cursor()
 into = cr.execute
@@ -1480,22 +1483,55 @@ def correct():
     timm("  "*60)
 
 
+def upd():
+    msg ="\n\033[91mConnecting ..........."
+    for i in msg:
+        sys.stdout.write(i)
+        sys.stdout.flush()
+        time.sleep(0.2)
+    if Vers == "2.1":
+        print("\033[93m\nYou Are Using The New Version  ✅")
+        input("Press Enter To continue...")
+        login()
+    else:
+        up = input("\nYou Are Using The Old Version, Do You Want To Update? Y, N: ").strip().capitalize()
+        if up == "Y" or up == "yes":
+            aroon ="\n Update Strated !\n"
+            for i in aroon:
+                sys.stdout.write(i)
+                sys.stdout.flush()
+                time.sleep(0.02)
+            os.system('git clone https://github.com/ahmad-93/company_management && cd company_management')
+            speed("Program Is Updated ✅")
+            timm(" "*200)
+            if os.name=='nt':
+                os.system('cls')
+            else:
+                os.system('clear')
+            os.system('company.py')
+        elif up == "N" or up == "No":
+            login()
+        else: login()
+
+
 def login():
     os.system("clear")
     
-    time_logo("""\033[1m\033[95m
+    time_logo(f"""\033[1m\033[95m
     ##       ####  \033[0;96m\033[1m  ####  \033[95m\033[1m ######  ##  ## 
     ##      ##  ## \033[0;96m\033[1m ##     \033[95m\033[1m   ##    ### ## 
     ##      ##  ## \033[0;96m\033[1m ## ### \033[95m\033[1m   ##    ## ### 
     ##      ##  ## \033[0;96m\033[1m ##  ## \033[95m\033[1m   ##    ##  ## 
-    ######   ####  \033[0;96m\033[1m  ####  \033[95m\033[1m ######  ##  ## \n""")
+    ######   ####  \033[0;96m\033[1m  ####  \033[95m\033[1m ######  ##  ## 
+                                  \033[97mVer: {Vers}""")
     timmm("""\n\033[1m    \033[91m[\033[92m+\033[91m]\033[93mLogin as Administrator Or User\033[91m[\033[92m+\033[91m]
   \033[94m\033[1m+---------------------------------------+    
   |      \033[91m[\033[92m01\033[91m] \033[0;96m => \033[94m \033[1mAdministrator          |
   |      \033[91m[\033[92m02\033[91m] \033[0;96m => \033[94m \033[1mUser                   |
   |      \033[91m[\033[92m03\033[91m] \033[0;96m => \033[94m \033[1mchange Program code    |
-  |      \033[91m[\033[92m04\033[91m] \033[0;96m => \033[94m \033[1mAbout                  |
-  |      \033[91m[\033[92m05\033[91m] \033[0;96m => \033[94m \033[1mExit                   |
+  |      \033[91m[\033[92m04\033[91m] \033[0;96m => \033[94m \033[1mCheck For Update       |
+  |      \033[91m[\033[92m05\033[91m] \033[0;96m => \033[94m \033[1mAbout                  |
+  |      \033[91m[\033[92m06\033[91m] \033[0;96m => \033[94m \033[1mExit                   |
   \033[94m+---------------------------------------+""")
 
     master = input("\033[91m[\033[92m+\033[91m] \033[93mChoose Option >>> ").strip()
@@ -1710,8 +1746,10 @@ def login():
     elif master == "3":
         change_code()
     elif master == "4":
-        about()
+        upd()
     elif master == "5":
+        about()
+    elif master == "6":
         close_app()
     else:
         if len(master) == 0 :
@@ -1745,7 +1783,7 @@ def chek():
                     speed("Email Is Added .. ✅")
                     speed("Please Allow Less Secure Apps\nFrom /Setting/Security/Allow Less Secure apps/ Turn On✅")
                     db.commit()
-                    input("\nPress Enter To Contineu...")
+                    input("\nPress Enter To continue...")
                     
                 else:
                     speed("\033[91mPassword Does Not Match, Try Again")
@@ -1766,7 +1804,7 @@ def chek():
                 into("insert into codes values(0)")
                 into(f"update codes set code = '{news}'")
                 speed("\033[93mCode Is Created ✅")
-                input("\nPress Enter To Contineu...")
+                input("\nPress Enter To continue...")
                 
             else:
                 print("\033[93mThe Code Does Not Match\nPlease Try Again")
@@ -1797,7 +1835,7 @@ def chek():
                         gg = ad_name, ads, em_meneger
                         into("insert into admins values (?, ?, ?)",gg)
                         speed("\033[93mYou Added In Administrators..✅")
-                        input("\nPress Enter To Contineu...")
+                        input("\nPress Enter To continue...")
                         os.system("clear")
                         speed("""
         Ok , The Program’s Basics Have Been Prepared
