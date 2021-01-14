@@ -14,7 +14,7 @@ import operator
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 os.system("clear")
-Vers = requests.get('https://pastebin.com/raw/dYNasC5t').text.format('utf-8')
+Vers = requests.get('https://pastebin.com/raw/chpyh8bA').text.format('utf-8')
 db = sqlite3.connect("company.db")
 cr = db.cursor()
 into = cr.execute
