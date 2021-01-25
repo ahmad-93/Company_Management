@@ -1,25 +1,34 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# -*- Coded By Ahmad Alnemer -*-
+#Don't Change copyright Mother Fucker :)
+# -*- Syrian Coderz -*-
+#Tool Finished In : 01:22 17/1/2020
 import sqlite3
-import os,requests
-from typing import Counter
-from sqlite3.dbapi2 import version_info
-import getpass
-import time,sys
-import smtplib
-import random
-import binascii
+import os,requests,getpass,random
+import time,sys,smtplib,binascii,operator
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-import operator
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 os.system("clear")
-Vers = requests.get('https://pastebin.com/raw/chpyh8bA').text.format('utf-8')
+Vers = []
+try:
+    Verse = requests.get('https://pastebin.com/raw/chpyh8bA').text.format('utf-8')
+    Vers.append(Verse)
+except: Vers.append("!!")
 db = sqlite3.connect("company.db")
 cr = db.cursor()
 into = cr.execute
 create = "create table if not exists "
-into(create+"company(worker text, password integer, job text, salary integer, email text, increase text, deduction text)")
+into(create+"""company(worker    text,
+                       password  integer,
+                       job       text,
+                       salary    integer,
+                       email     text,
+                       increase  text,
+                       deduction text)""")
 into(create+"users(user text, password integer, email text)")
 into(create+"admins(user text, password integer, email text)")
 into(create+"codes(code integer)")
@@ -212,9 +221,9 @@ def about():
     ##   ### ##       \033[0;96m\033[1m##     ## \033[95m\033[1m##       ##    ##  
     ##    ## ######## \033[0;96m\033[1m##     ## \033[95m\033[1m######## ##     ##
     \033[0;96m\033[1m################# ##     ## ##################""")
-    speedd("""
+    speedd(f"""
        \033[91m[\033[92m+\033[91m]\033[1m(C)opyright > Github.com/Ahmad-93\033[91m [\033[92m+\033[91m]
-      \033[91m[\033[92m+\033[91m]\033[95m  App  Coded  V2.1 BY Ahmad Alnemer \033[91m[\033[92m+\033[91m]
+      \033[91m[\033[92m+\033[91m]\033[95m  App  Coded  v{Vers[0]} BY Ahmad Alnemer \033[91m[\033[92m+\033[91m]
      \033[91m[\033[92m+\033[91m]\033[92m      EMail  >  ahvip92@gmail.com     \033[91m[\033[92m+\033[91m]
     \033[91m[\033[92m+\033[91m]\033[94m  Facebook >  https://www.fb.com/viip4  \033[91m[\033[92m+\033[91m]
    \033[91m[\033[92m+\033[91m]  Instagram > instagram.com/ahmadnemer92  \033[91m[\033[92m+\033[91m]
@@ -1489,8 +1498,8 @@ def upd():
         sys.stdout.write(i)
         sys.stdout.flush()
         time.sleep(0.2)
-    if Vers == "2.1":
-        print("\033[93m\nYou Are Using The New Version  ✅")
+    if Vers[0] == "2.1":
+        print("\033[93m\n\nYou Are Using The New Version  ✅\n")
         input("Press Enter To continue...")
         login()
     else:
@@ -1523,7 +1532,7 @@ def login():
     ##      ##  ## \033[0;96m\033[1m ## ### \033[95m\033[1m   ##    ## ### 
     ##      ##  ## \033[0;96m\033[1m ##  ## \033[95m\033[1m   ##    ##  ## 
     ######   ####  \033[0;96m\033[1m  ####  \033[95m\033[1m ######  ##  ## 
-                                  \033[97mVer: {Vers}""")
+                                  \033[97mVer: {Vers[0]}""")
     timmm("""\n\033[1m    \033[91m[\033[92m+\033[91m]\033[93mLogin as Administrator Or User\033[91m[\033[92m+\033[91m]
   \033[94m\033[1m+---------------------------------------+    
   |      \033[91m[\033[92m01\033[91m] \033[0;96m => \033[94m \033[1mAdministrator          |
@@ -1778,6 +1787,16 @@ def chek():
                 new_password = getpass.getpass("Enter Password: ").strip()
                 r_new_password = getpass.getpass("R-Type Password: ").strip()
                 if new_password == r_new_password:
+                    try:
+                        server = smtplib.SMTP('smtp.gmail.com:587')
+                        server.starttls()
+                        server.login(new_mail, new_password)
+                        server.quit()
+                    except:
+                        print("\033[91mThe email or password is incorrect")
+                        print("Or, you do not allow external applications to be used from the email security settings")
+                        print("Please Try Again...")
+                        mail()
                     gg = new_mail, new_password
                     into("insert into companymail values(?, ?)",gg)
                     speed("Email Is Added .. ✅")
